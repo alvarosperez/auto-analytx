@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.97e73796.css",
-    "main.js": "/static/js/main.4fdde551.js",
-    "static/media/logo.png": "/static/media/logo.8dbafc65844c7da14512.png",
-    "static/media/NeueHaasDisplay-Mediu.ttf": "/static/media/NeueHaasDisplay-Mediu.32921edb532f55cbfdc6.ttf",
-    "static/media/NeueHaasDisplay-Light.ttf": "/static/media/NeueHaasDisplay-Light.46f0c2f76453ff7dcfba.ttf",
-    "static/media/NeueHaasDisplay-Thin.ttf": "/static/media/NeueHaasDisplay-Thin.cdab14c1138747d56ba3.ttf",
-    "static/media/NeueHaasDisplay-Roman.ttf": "/static/media/NeueHaasDisplay-Roman.a4c6f6d97398d8f9a96c.ttf",
-    "static/media/loader.gif": "/static/media/loader.90672f1deffccbcdf4f1.gif",
-    "static/media/NeueHaasDisplay-Light.woff": "/static/media/NeueHaasDisplay-Light.169051bef22dd52bfd57.woff",
-    "static/media/NeueHaasDisplay-Mediu.woff": "/static/media/NeueHaasDisplay-Mediu.0bd6a4738598aa6796fe.woff",
-    "static/media/NeueHaasDisplay-Thin.woff": "/static/media/NeueHaasDisplay-Thin.ad70f737b2eb4a4ec8c8.woff",
-    "static/media/NeueHaasDisplay-Roman.woff": "/static/media/NeueHaasDisplay-Roman.288dede4e657a8f50bcc.woff",
-    "static/media/NeueHaasDisplay-Light.woff2": "/static/media/NeueHaasDisplay-Light.e72c5cf7291d410b9b46.woff2",
-    "static/media/NeueHaasDisplay-Mediu.woff2": "/static/media/NeueHaasDisplay-Mediu.fdb018c45d9bba5e4d76.woff2",
-    "static/media/NeueHaasDisplay-Thin.woff2": "/static/media/NeueHaasDisplay-Thin.7f5601f26d0da21ce8b5.woff2",
-    "static/media/NeueHaasDisplay-Roman.woff2": "/static/media/NeueHaasDisplay-Roman.8b33ba08d72df4c22618.woff2",
-    "index.html": "/index.html",
-    "main.97e73796.css.map": "/static/css/main.97e73796.css.map",
-    "main.4fdde551.js.map": "/static/js/main.4fdde551.js.map"
+    "main.css": "./static/css/main.5b9b98ec.css",
+    "main.js": "./static/js/main.a098507d.js",
+    "static/media/logo.png": "./static/media/logo.8dbafc65844c7da14512.png",
+    "static/media/NeueHaasDisplay-Mediu.ttf": "./static/media/NeueHaasDisplay-Mediu.32921edb532f55cbfdc6.ttf",
+    "static/media/NeueHaasDisplay-Light.ttf": "./static/media/NeueHaasDisplay-Light.46f0c2f76453ff7dcfba.ttf",
+    "static/media/NeueHaasDisplay-Thin.ttf": "./static/media/NeueHaasDisplay-Thin.cdab14c1138747d56ba3.ttf",
+    "static/media/NeueHaasDisplay-Roman.ttf": "./static/media/NeueHaasDisplay-Roman.a4c6f6d97398d8f9a96c.ttf",
+    "static/media/loader.gif": "./static/media/loader.90672f1deffccbcdf4f1.gif",
+    "static/media/NeueHaasDisplay-Light.woff": "./static/media/NeueHaasDisplay-Light.169051bef22dd52bfd57.woff",
+    "static/media/NeueHaasDisplay-Mediu.woff": "./static/media/NeueHaasDisplay-Mediu.0bd6a4738598aa6796fe.woff",
+    "static/media/NeueHaasDisplay-Thin.woff": "./static/media/NeueHaasDisplay-Thin.ad70f737b2eb4a4ec8c8.woff",
+    "static/media/NeueHaasDisplay-Roman.woff": "./static/media/NeueHaasDisplay-Roman.288dede4e657a8f50bcc.woff",
+    "static/media/NeueHaasDisplay-Light.woff2": "./static/media/NeueHaasDisplay-Light.e72c5cf7291d410b9b46.woff2",
+    "static/media/NeueHaasDisplay-Mediu.woff2": "./static/media/NeueHaasDisplay-Mediu.fdb018c45d9bba5e4d76.woff2",
+    "static/media/NeueHaasDisplay-Thin.woff2": "./static/media/NeueHaasDisplay-Thin.7f5601f26d0da21ce8b5.woff2",
+    "static/media/NeueHaasDisplay-Roman.woff2": "./static/media/NeueHaasDisplay-Roman.8b33ba08d72df4c22618.woff2",
+    "index.html": "./index.html",
+    "main.5b9b98ec.css.map": "./static/css/main.5b9b98ec.css.map",
+    "main.a098507d.js.map": "./static/js/main.a098507d.js.map"
   },
   "entrypoints": [
-    "static/css/main.97e73796.css",
-    "static/js/main.4fdde551.js"
+    "static/css/main.5b9b98ec.css",
+    "static/js/main.a098507d.js"
   ]
 }
