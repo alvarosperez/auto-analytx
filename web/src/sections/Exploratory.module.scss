@@ -1,0 +1,167 @@
+@import '../utilities/variables.scss';
+
+$color-form-highlight: $gray-border;
+$padding: 12px;
+
+.tableContainer {
+    display: flex;
+    margin-top: 30px;
+}
+.fileDescription {
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 265px;
+
+    text-align: justify;
+    text-justify: inter-word;
+
+    padding: 0 20px 0 0;
+    margin: 0 20px 0 0;
+
+    border-right: 1px solid $gray-border;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    & .column{
+        font-family: NeueHaasDisplay-Mediu;
+        color: $dark-green;
+    }
+    & .row {
+        font-family: NeueHaasDisplay-Mediu;
+        color: $dark-blue;
+    }
+}
+.fileName {
+    margin-left: 5px;
+    font-family: NeueHaasDisplay-Mediu;
+}
+
+.table {
+    border: 1px solid $gray-border;
+    font-size: 14px;
+    flex-grow: 1;
+    max-width: 1100px;
+}
+
+.tableHeader {
+	display: flex;
+	width: 100%;
+	background:#000;
+	padding: $padding 0;
+    color: white;
+}
+
+.tableRow {
+	display: flex;
+	width: 100%;
+	padding: $padding 0;
+
+	&:nth-of-type(odd) {
+		background: $gray-border;
+	}
+}
+
+.tableData, .headerItem {
+	flex: 1 1 20%;
+	text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.headerItem:hover {
+    overflow: visible;
+    position: relative;
+    padding: 0 20px;
+    font-weight: bold;
+}
+
+.variables {
+    display: grid;
+    align-items: center;
+    grid-template-columns: fit-content(200px) fit-content(80px) 150px fit-content(200px) 260px fit-content(200px);
+    gap: 8px 30px;
+
+    .variableHeader {
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .variableName {
+        font-family: NeueHaasDisplay-Mediu;
+        color: $dark-green;
+    }
+    .variableType, .variableHeader {
+        justify-self: center;
+    }
+
+    .variableName, .variableMissing {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .line {
+        grid-column: 1 / -1;
+        height: 1px;
+        background: $gray-border;
+    }
+    .variableUnique {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        >* {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+    }
+    .seeDetails {
+        div {
+            font-size: 10px;
+            padding: 5px 10px;
+            color: white;
+            background-color: $main-green;
+            border-radius: 6px;
+            cursor: pointer;
+
+            &.active {
+                background-color: $dark-green;
+            }
+        }
+    }
+}
+
+.descriptiveContainer {
+    display: flex;
+    align-items: center;
+
+    > div {
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+}
+
+.histograma {
+    margin-left: 40px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: $default-box-shadow;
+    border-radius: 4px;
+
+    & .Title2 {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-family: NeueHaasDisplay-Mediu;
+        text-align: center;
+    }
+
+    & .description {
+        margin-top: 20px;
+        text-align: justify;
+        text-justify: inter-word;
+        max-width: 370px;
+        font-size: 14px;
+    }
+}

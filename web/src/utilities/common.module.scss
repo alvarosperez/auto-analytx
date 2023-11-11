@@ -1,0 +1,116 @@
+@import './variables.scss';
+
+.MainContainer {
+    // this is to use together with the Header
+
+    position: fixed;
+    padding: 110px 20px 30px 20px;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.Title {
+    font-size: 24px;
+    font-family: 'NeueHaasDisplay-Light';
+    margin-bottom: 20px;
+}
+.Title2 {
+    font-size: 20px;
+    font-family: 'NeueHaasDisplay-Light';
+    margin-bottom: 20px;
+}
+
+.Tutorial {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-family: 'NeueHaasDisplay-Light';
+
+    & > svg {
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: $gray-border;
+    & img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+}
+
+.center {
+    align-items: center !important;
+}
+
+.errorMessage {
+    padding: 10px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: $light-red;
+    color: $main-red;
+    margin-top: 5px;
+}
+
+.divider {
+    margin: 20px 0;
+    border-top: 1px solid $dark-gray-border;
+}
+
+.minMaxIcon {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+
+    font-size: 8px;
+    color: white;
+
+    text-transform: uppercase;
+
+    font-family: 'NeueHaasDisplay-Light';
+
+    margin-right: 4px;
+    padding-top: 2px;
+}
+
+.withMargin10 {
+    margin-top: 10px;
+}
+.withMargin20 {
+    margin-top: 20px;
+}
+
+.box {
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0, 78, 128, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+
+    & .TitleBox {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-family: NeueHaasDisplay-Mediu;
+        text-align: center;
+    }
+}
+
+.column{
+    font-family: NeueHaasDisplay-Mediu;
+    color: $dark-green;
+}
+.row {
+    font-family: NeueHaasDisplay-Mediu;
+    color: $dark-blue;
+}

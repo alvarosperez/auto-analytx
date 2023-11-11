@@ -1,0 +1,28 @@
+@import "../utilities/variables";
+
+.Input {
+    border: 1px solid $gray-border;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 0 11px;
+    height: 40px;
+    font-size: 14px;
+    color: $main-black;
+    width: 100%;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+    outline: none;
+    font-family: 'NeueHaasDisplay-Roman';
+
+    &::placeholder {
+        color: $gray-border;
+    }
+    &:hover, &:focus {
+        border-width: 2px;
+        padding: 0 10px;
+    }
+    &:focus {
+        border-color: $main-green;
+        color: $main-green;
+    }
+}

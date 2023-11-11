@@ -1,0 +1,89 @@
+@import "./utilities/variables.scss";
+
+// FONTS
+@font-face {
+  font-family: 'NeueHaasDisplay-Roman';
+  src: url('./assets/fonts/NeueHaasDisplay-Roman.woff2') format('woff2'),
+      url('./assets/fonts/NeueHaasDisplay-Roman.woff') format('woff'),
+      url('./assets/fonts/NeueHaasDisplay-Roman.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasDisplay-Thin';
+  src: url('./assets/fonts/NeueHaasDisplay-Thin.woff2') format('woff2'),
+      url('./assets/fonts/NeueHaasDisplay-Thin.woff') format('woff'),
+      url('./assets/fonts/NeueHaasDisplay-Thin.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasDisplay-Mediu';
+  src: url('./assets/fonts/NeueHaasDisplay-Mediu.woff2') format('woff2'),
+      url('./assets/fonts/NeueHaasDisplay-Mediu.woff') format('woff'),
+      url('./assets/fonts/NeueHaasDisplay-Mediu.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasDisplay-Light';
+  src: url('./assets/fonts/NeueHaasDisplay-Light.woff2') format('woff2'),
+      url('./assets/fonts/NeueHaasDisplay-Light.woff') format('woff'),
+      url('./assets/fonts/NeueHaasDisplay-Light.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: 'NeueHaasDisplay-Roman', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  min-height: 100%;
+  min-width: 100%;
+
+  color: $main-black;
+  background-color: $gray1;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}

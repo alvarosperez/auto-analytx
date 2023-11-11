@@ -1,0 +1,82 @@
+.Loader {
+	height: 100vh;
+    width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.Car {
+	&__body {
+		animation: shake 0.2s ease-in-out infinite alternate;
+	}
+	
+	&__line {
+		
+		
+		&__top {
+            transform-origin: center right;
+		    stroke-dasharray: 22;
+		    animation: line 0.8s ease-in-out infinite;
+		    animation-fill-mode: both;
+			animation-delay: 0s;
+		}
+		
+		&__middle {
+            transform-origin: center right;
+		    stroke-dasharray: 22;
+		    animation: line 0.8s ease-in-out infinite;
+		    animation-fill-mode: both;
+			animation-delay: 0.2s;
+		}
+		
+		&__bottom {
+            transform-origin: center right;
+		    stroke-dasharray: 22;
+		    animation: line 0.8s ease-in-out infinite;
+		    animation-fill-mode: both;
+			animation-delay: 0.4s;
+		}
+	}
+}
+
+@keyframes shake {
+	0% {
+		transform: translateY(-1%);
+	}
+	100% {
+		transform: translateY(3%);
+	}
+}
+
+@keyframes line {
+	0% {
+		stroke-dashoffset: 22;
+	}
+	
+	25% {
+		stroke-dashoffset: 22;
+	}
+	
+	50% {
+		stroke-dashoffset: 0;
+	}
+	
+	51% {
+		stroke-dashoffset: 0;
+	}
+	
+	80% {
+		stroke-dashoffset: -22;
+	}
+	
+	100% {
+		stroke-dashoffset: -22;
+	}
+}

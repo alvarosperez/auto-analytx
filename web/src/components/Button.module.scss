@@ -1,0 +1,53 @@
+@import "../utilities/variables";
+
+.Container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 48px;
+    min-height: 40px;
+    padding: 7px 32px;
+
+    border: 2px solid;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+
+    // default
+    background-color: $back-green;
+    color: $dark-green;
+    border-color: $main-green;
+    &:hover {
+        background-color: $main-green;
+        color: $back-green;
+    }
+
+    // main
+    &.main {
+        background-color: $back-green;
+        color: $dark-green;
+        border-color: $main-green;
+
+        &:hover {
+            background-color: $main-green;
+            color: $back-green;
+        }
+    }
+
+    // secondary
+    &.secondary {
+        background-color: $back-blue;
+        color: $main-blue;
+        border-color: $main-blue;
+
+        &:hover {
+            background-color: $main-blue;
+            color: $back-blue;
+        }
+    }
+}

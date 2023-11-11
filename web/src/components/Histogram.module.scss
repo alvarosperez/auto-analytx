@@ -1,0 +1,48 @@
+@import '../utilities/variables.scss';
+
+.Container {
+    display: flex;
+}
+
+text.info {
+    font-size: 10px;
+    paint-order: stroke;
+    stroke: white;
+    stroke-width: 1px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    text-transform: uppercase;
+
+    &.middle {
+        text-anchor: middle;
+    }
+}
+
+rect.histogram {
+    fill: $dark-gray-border;
+
+    &.evenOdd {
+        &:nth-child(even) {
+            fill: #919191;
+        }
+    }
+}
+
+rect.info {
+    width: 1px;
+
+    &.media {
+        fill: black;
+    }
+}
+
+text.info {
+    &.media {
+        fill: black;
+    }
+}
+
+.AxisBottomLabel{
+    font-size: 10px;
+    text-anchor: middle;
+}

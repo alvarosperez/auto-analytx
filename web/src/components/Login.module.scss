@@ -1,0 +1,70 @@
+@import "../utilities/variables";
+
+.Container {
+    background-color: white;
+
+    width: 400px;
+    padding: 20px 30px;
+
+    position: absolute;
+    top: 130px;
+    left: calc(50% - 200px);
+
+    box-shadow: $default-box-shadow;
+    border-radius: 5px;
+}
+
+.ButtonContainer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.InputContainer{
+    padding: 0 40px;
+}
+
+.Titles {
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.ErrorMessage {
+    color: $main-red;
+    font-size: 14px;
+    text-align: center;
+}
+
+.CredentialsMessage {
+    color: $dark-green;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 30px;
+
+    display: flex;
+    justify-content: space-evenly;
+
+    cursor: not-allowed;
+}
+
+.LogoContainer {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .Logo {
+        height: 40px;
+        width: 60px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    & > .WelcomeText {
+        font-size: 24px;
+        font-family: 'NeueHaasDisplay-Light';
+        text-align: center;
+    }
+}
+

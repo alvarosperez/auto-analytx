@@ -1,0 +1,43 @@
+@import '../utilities/variables.scss';
+
+.Container {
+    margin: 0 0 0 auto;
+    font-size: 13px;
+}
+
+span.UserIcon {
+    margin-right: 30px;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+
+span.LogoutIcon {
+    cursor: pointer;
+}
+
+.Menu {
+    position: absolute;
+    background-color: white;
+    right: 110px;
+    top: 52px;
+    border-radius: 5px;
+    box-shadow: $default-box-shadow;
+    padding: 15px;
+
+    & > div {
+        margin-bottom: 10px;
+        cursor: pointer;
+
+        &:hover {
+            font-weight: bold;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+

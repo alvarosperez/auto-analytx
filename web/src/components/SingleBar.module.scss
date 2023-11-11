@@ -1,0 +1,28 @@
+.Container {
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-radius: 0px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div.Bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0px;
+    }
+
+    .Value {
+        position: absolute;
+        z-index: 5;
+        font-size: 12px;
+        color: white;
+        font-family: NeueHaasDisplay-Light;
+    }
+
+    &.withBorder {
+        border: 1px solid;
+    }
+}
