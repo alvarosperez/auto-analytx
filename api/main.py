@@ -53,12 +53,26 @@ async def create_upload_file(file: UploadFile = File(...)):
         return {"error": "Error: No se han detectado cabeceras en el fichero"}
 
     df = pd.read_csv(f"./{file.filename}", sep=separator)
+    df = df.replace(np.nan, None)
+    df_nonan = df.dropna()
+    for col in df.columns:
+        df_nonan[col] = pd.to_numeric(df_nonan[col], errors='ignore')
 
     # for each column, identify the type, and missing values and unique values
     columns_info = {}
     simple_column_info = {}
     for col in df.columns:
-        col_type = "number" if df[col].dtype == np.float64 or df[col].dtype == np.int64 else "text"
+        col_type = "number" if df_nonan[col].dtype == np.float64 or df_nonan[col].dtype == np.int64 else "text"
+        if col_type == "number":
+            if df_nonan[col].nunique() == 2 and set(df_nonan[col].unique()) == {0, 1}:
+                col_type = "text"
+            elif df_nonan[col].nunique() == 1:
+                col_type = "text"
+            elif col.lower().endswith("id"):
+                col_type = "text"
+            elif "class" in col.lower() and df_nonan[col].nunique() < 20:
+                col_type = "text"
+
         columns_info[col] = {
             "name": col,
             "type": col_type,
@@ -68,17 +82,17 @@ async def create_upload_file(file: UploadFile = File(...)):
         simple_column_info[col] = {
             "type": col_type,
         }
-        if df[col].dtype == np.float64 or df[col].dtype == np.int64:
+        if col_type == "number":
             columns_info[col]["min_max_mean"] = [
-                int(df[col].min()), int(df[col].max()), int(df[col].mean())
+                int(df_nonan[col].min()), int(df_nonan[col].max()), int(df_nonan[col].mean())
             ]
             try:
-                new_df = df.copy()
+                new_df = df_nonan.copy()
                 columns_info[col]["bins"] = bin(new_df, col, 30, columns_info[col]["min_max_mean"])
             except Exception as e:
                 print(col, e)
                 columns_info[col]["bins"] = {}
-        if df[col].dtype == object:
+        if col_type == "text":
             try:
                 columns_info[col]["categories"] = df.groupby(col).size().to_dict()
             except Exception as e:
@@ -93,10 +107,10 @@ async def create_upload_file(file: UploadFile = File(...)):
         "rows": df.shape[0],
         "columns": df.shape[1],
         "columns_info": columns_info,
-        "description" : summarize_headers(df.columns.tolist()),
-        "columns_description": get_columns_info(columns_info),
+        "description" : "...", # summarize_headers(df.columns.tolist()),
+        "columns_description": {}, # get_columns_info(columns_info),
         "models": {
-            "options": get_possible_analysis(simple_column_info),
+            "options": {}, # get_possible_analysis(simple_column_info),
         },
     }
 
@@ -121,10 +135,11 @@ async def download_file(filename):
 # endpoint to test a model
 @app.post("/models/test/")
 async def testing_model(model: AIModel):
-    df = pd.DataFrame([model.data], index=[0]).apply(pd.to_numeric)
-    print(df)
+    df = pd.DataFrame([model.data], index=[0])
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='ignore')
     model_response = test_model(model.fileName, model.model, df)
-    print(model_response)
+    print('result', model_response)
     return {
-        "value": model_response
+        "value": str(model_response)
     }

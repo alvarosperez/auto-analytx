@@ -114,3 +114,17 @@
     font-family: NeueHaasDisplay-Mediu;
     color: $dark-blue;
 }
+.analytics {
+    font-family: NeueHaasDisplay-Mediu;
+    color: $dark-purple;
+}
+.AnalyticsButton {
+    background-color: $back-purple !important;
+    color: $dark-purple !important;
+    border-color: $main-purple !important;
+
+    &:hover {
+        background-color: $main-purple !important;
+        color: white !important;
+    }
+}

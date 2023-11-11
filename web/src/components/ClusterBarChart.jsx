@@ -10,20 +10,20 @@ import styles from './Histogram.module.scss';
 import { COLORS, GRAPH_HEIGHT, GRAPH_WIDTH } from '../utilities/variables';
 import { formatNumber } from '../utilities/format';
 
-const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, selectedCategory = undefined }) => {
+const ClusterBarChart = ({ data, name, forcedHeight = false, forcedWidth = false, colorCategories = false, selectedCategory = undefined }) => {
     const domRef = useRef();
     const [svg, setSvg] = useState(null);
 
     const margin = {
-        top: 20, right: 10, bottom: 32, left: 10,
+        top: 20, right: 60, bottom: 20, left: 10,
     };
-    const fullWidth = GRAPH_WIDTH;
+    const fullWidth = forcedWidth || GRAPH_WIDTH;
     const fullHeight = forcedHeight || GRAPH_HEIGHT;
     const width = fullWidth - margin.left - margin.right;
     const height = fullHeight - margin.top - margin.bottom;
     const x = scaleBand()
         .range([0, width])
-        .padding(0.03);
+        .padding(0.1);
     // Y axis: scale and draw:
     const y = scaleLinear()
         .range([height - 5, 0]);
@@ -40,39 +40,45 @@ const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, s
 
     const draw = (info) => {
         const categories = Object.keys(info);
+        const subcategories = Object.keys(info[categories[0]]);
+        const cat_subcat_list = [];
+        for (let i = 0; i < categories.length; i++) {
+            for (let j = 0; j < subcategories.length; j++) {
+                cat_subcat_list.push([categories[i], subcategories[j], info[categories[i]][subcategories[j]]]);
+            }
+        }
 
         x.domain(categories);
         svg.select('.axisBottom').call(
             axisBottom(x)
         );
-        y.domain([0, max(Object.values(info)) * 1.05]);
+        y.domain([0, 1.1]);
 
         // append the bar rectangles to the svg element
-        const bars = svg.selectAll('rect.histogram').data(categories);
+        const bars = svg.selectAll('rect.histogram').data(cat_subcat_list);
 
         bars.enter()
             .append('rect')
-            .classed(styles.histogram, true)
-            .classed(styles.evenOdd, (d) => (d !== selectedCategory && colorCategories))
-            .classed(styles.selected, (d) => (d === selectedCategory))
             .classed('histogram', true)
-            .attr('x', (d) => x(d))
-            .attr('width', x.bandwidth())
-            .attr('y', (d) => y(info[d]))
-            .attr('height', (d) => height - y(info[d]))
+            .attr('x', (d) => x(d[0]) + (x.bandwidth() / subcategories.length) * subcategories.indexOf(d[1]))
+            .attr('width', x.bandwidth() / subcategories.length - 1)
+            .attr('y', (d) => y(d[2]))
+            .attr('height', (d) => height - y(d[2]))
+            .attr('fill', (d) => COLORS[d[1]])
             ;
 
         bars
-            .attr('x', (d) => x(d))
-            .attr('width', x.bandwidth())
-            .attr('y', (d) => y(info[d]))
-            .attr('height', (d) => height - y(info[d]))
+            .attr('x', (d) => x(d[0]) + (x.bandwidth() / subcategories.length) * subcategories.indexOf(d[1]))
+            .attr('width', x.bandwidth() / subcategories.length - 1)
+            .attr('y', (d) => y(d[2]))
+            .attr('height', (d) => height - y(d[2]))
+            .attr('fill', (d) => COLORS[d[1]])
             ;
 
         bars.exit().remove();
 
         // append the bar rectangles to the svg element
-        const texts = svg.selectAll('text.histogram').data(categories);
+        const texts = svg.selectAll('text.histogram').data(categories.filter((d) => d === selectedCategory));
 
         texts.enter()
             .append('text')
@@ -80,16 +86,48 @@ const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, s
             .classed(styles.middle, true)
             .classed('histogram', true)
             .attr('x', (d) => x(d) + x.bandwidth() / 2)
-            .attr('y', (d) => y(info[d]) - 3)
-            .text(d => formatNumber(info[d]));
+            .attr('y', 10)
+            .text('Mejor');
 
         texts
             .attr('x', (d) => x(d) + x.bandwidth() / 2)
-            .attr('y', (d) => y(info[d]) - 3)
-            .attr('height', (d) => height - y(info[d]))
-            .text(d => formatNumber(info[d]));
+            .attr('y', 10)
+            .text('Mejor');
 
         texts.exit().remove();
+
+        const legends = svg.selectAll('rect.legend').data(subcategories);
+
+        legends.enter()
+            .append('rect')
+            .classed('legend', true)
+            .attr('x', fullWidth - 70)
+            .attr('y', (d, i) => height / 2 + i * 15)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', (d) => COLORS[d]);
+
+        legends
+            .attr('x', fullWidth - 70)
+            .attr('y', (d, i) => height / 2 + i * 15)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', (d) => COLORS[d]);
+
+        const legendsText = svg.selectAll('text.legend').data(subcategories);
+
+        legendsText.enter()
+            .append('text')
+            .classed('legend', true)
+            .classed(styles.legend, true)
+            .attr('x', fullWidth - 58)
+            .attr('y', (d, i) => height / 2 + 8 + i * 15)
+            .text((d) => d);
+
+        legendsText
+            .attr('x', fullWidth - 58)
+            .attr('y', (d, i) => height / 2 + 8 + i * 15)
+            .text((d) => d);
     };
 
     useEffect(() => {
@@ -122,4 +160,4 @@ const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, s
     );
 };
 
-export default BarChart;
+export default ClusterBarChart;

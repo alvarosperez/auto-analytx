@@ -18,6 +18,19 @@ text.info {
     }
 }
 
+text.legend {
+    font-size: 10px;
+    paint-order: stroke;
+    stroke: white;
+    stroke-width: 1px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+
+    &.middle {
+        text-anchor: middle;
+    }
+}
+
 rect.histogram {
     fill: $dark-gray-border;
 
@@ -25,6 +38,9 @@ rect.histogram {
         &:nth-child(even) {
             fill: #919191;
         }
+    }
+    &.selected {
+        fill: $main-purple;
     }
 }
 

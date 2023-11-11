@@ -21,6 +21,17 @@
     opacity: 0.5;
 }
 
+.column {
+    padding-right: 8px;
+    margin-left: 8px;
+    border-right: 1px solid $dark-gray-border;
+    font-family: 'NeueHaasDisplay-Light';
+
+    &:last-child {
+        border-right: none;
+    }
+}
+
 .evaluation {
     display: flex;
     gap: 20px;
@@ -63,5 +74,38 @@
     & span {
         margin-left: 10px;
         font-size: 20px;
+    }
+}
+
+.SelectoresYAyuda {
+    display: flex;
+    align-items: flex-start;
+
+    & .tutorial {
+        margin-top: 10px;
+    }
+
+    & .HelpContainer {
+        margin-left: 40px;
+        min-width: 400px;
+        max-width: 700px
+    }
+
+    & .HelpDescription {
+        margin-top: 20px;
+        display: flex;
+
+        & img {
+            max-width: 200px;
+            max-height: 200px;
+            margin-right: 20px;
+        }
+
+        & > div > div {
+            margin-bottom: 5px;
+        }
+    }
+    & .HelpTarget {
+        margin-top: 20px;
     }
 }

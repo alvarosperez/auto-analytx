@@ -25,7 +25,7 @@ const Main = ({  }) => {
     };
 
     const handleUpload = () => {
-        setResult(null);
+        setResult({});
         setLoading(true);
 
         const formData = new FormData();
@@ -98,7 +98,7 @@ const Main = ({  }) => {
                             </span>
                         </div>
                     )}
-                    {!loading && (!result || result.error) && (
+                    {(!loading || result.error) && (
                         <div className={clsx(commonStyles.Tutorial, styles.tutorial)}>
                             <FontAwesomeIcon icon={faLeftLong}/>
                             <span>

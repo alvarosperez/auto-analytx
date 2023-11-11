@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import styles from './Models.module.scss';
 import commonStyles from "../utilities/common.module.scss";
-import { API_URL, COLUMN_TYPES, MIN_MAX_MEAN } from '../utilities/variables';
+import { API_URL, COLUMN_TYPES, MIN_MAX_MEAN, MODELS, TUTORIAL, TUTORIAL_IMG, TUTORIAL_TARGET } from '../utilities/variables';
 import { formatNumber } from '../utilities/format';
 import Button from '../components/Button';
 import Select from 'react-select';
 import loadingImg from "../assets/img/loader.gif";
 import BarChart from '../components/BarChart';
+import ClusterBarChart from '../components/ClusterBarChart';
 import Input from '../components/Input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLeftLong, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const Models = ({ data, file }) => {
     const columnsSelectorRef = React.createRef();
@@ -24,7 +27,7 @@ const Models = ({ data, file }) => {
     const numericColumns = Object.values(data.columns_info).filter((column) => column.type === 'number').map((column) => column.name);
     const categoricalColumns = Object.values(data.columns_info).filter((column) => column.type === 'text').map((column) => column.name);
 
-    const availableModels = Object.keys(data.models.options).filter((model) => {
+    const availableModels = MODELS.filter((model) => {
         if (model === 'clasificación' && !categoricalColumns.length) return false;
         if (model === 'predicción temporal' && !dateColumns.length) return false;
         return true;
@@ -47,7 +50,7 @@ const Models = ({ data, file }) => {
     };
 
     const generateModel = () => {
-        setResult(null);
+        setResult({});
         setLoading(true);
 
         const aiHeaders = new Headers();
@@ -77,7 +80,7 @@ const Models = ({ data, file }) => {
     };
 
     const testModel = () => {
-        setResultTest(null);
+        setResultTest({});
         setLoadingTest(true);
 
         const aiHeaders = new Headers();
@@ -111,47 +114,72 @@ const Models = ({ data, file }) => {
             <div className={commonStyles.Title2}>Analítica Avanzada</div>
             <div>Quieres realizar algún tipo de modelo? Para tus datos, estas son las opciones que podrían tener sentido:</div>
             <ul>
-                {availableModels.map((option) => (
+                {Object.keys(data.models.options).map((option) => (
                     <li key={option} className={styles.option}>
-                        <b>{option}</b>
+                        <span className={commonStyles.analytics}>{option}</span>
                         , con las columnas:&nbsp;
-                        {data.models.options[option].map((column) => (
-                            <span key={column} className={styles.column}>
+                        {data.models.options[option]?.map((column) => (
+                            <span key={column} className={clsx(styles.column, commonStyles.column)}>
                                 {column}
-                                ,&nbsp;
                             </span>
                         ))}
                     </li>
                 ))}
             </ul>
             <div className={styles.Selector}>
-                <Select
-                    className={clsx(styles.modelSelector, (loading || result.data) && styles.locked)}
-                    options={availableModels.map((option) => ({ value: option, label: option })) }
-                    isMulti={false}
-                    onChange={(e) => {
-                        setSelectedModel(e.value);
-                        columnsSelectorRef.current.clearValue();
-                    }}
-                    placeholder="Selecciona un modelo"
-                />
-                <div className={clsx(styles.columnSelector, (loading || result.data) && styles.locked)}>
-                    <Select
-                        ref={columnsSelectorRef}
-                        options={availableTargets[selectedModel]?.map((column) => ({ value: column, label: column })) || []}
-                        isMulti={['clasificación', 'clustering'].includes(selectedModel)}
-                        onChange={(e) => {
-                            if (!e) return setSelectedColumns([]);
-                            if (['clasificación', 'clustering'].includes(selectedModel)) {
-                                setSelectedColumns(e.map((column) => column.value));
-                            } else {
-                                setSelectedColumns([e.value]);
-                            };
-                        }}
-                        placeholder="Selecciona la(s) columna(s)"
-                    />
+                <div className={styles.SelectoresYAyuda}>
+                    <div>
+                        <Select
+                            className={clsx(styles.modelSelector, (loading || result?.data) && styles.locked)}
+                            options={availableModels.map((option) => ({ value: option, label: option })) }
+                            isMulti={false}
+                            onChange={(e) => {
+                                setSelectedModel(e.value);
+                                columnsSelectorRef.current.clearValue();
+                            }}
+                            placeholder="Selecciona un modelo"
+                        />
+                        <div className={clsx(styles.columnSelector, (loading || result?.data) && styles.locked)}>
+                            <Select
+                                ref={columnsSelectorRef}
+                                options={availableTargets[selectedModel]?.map((column) => ({ value: column, label: column })) || []}
+                                isMulti={['clustering'].includes(selectedModel)}
+                                onChange={(e) => {
+                                    if (!e) return setSelectedColumns([]);
+                                    if (['clustering'].includes(selectedModel)) {
+                                        setSelectedColumns(e.map((column) => column.value));
+                                    } else {
+                                        setSelectedColumns([e.value]);
+                                    };
+                                }}
+                                placeholder="Selecciona la(s) columna(s)"
+                            />
+                        </div>
+                    </div>
+                    {(!selectedModel) && (
+                        <div className={clsx(commonStyles.Tutorial, styles.tutorial)}>
+                            <FontAwesomeIcon icon={faLeftLong}/>
+                            <span>
+                                Selecciona un modelo para ver una explicación.
+                            </span>
+                        </div>
+                    )}
+                    {selectedModel && (
+                        <div className={clsx(styles.HelpContainer, commonStyles.box)}>
+                            <div className={clsx(commonStyles.TitleBox, commonStyles.analytics)}>{selectedModel}</div>
+                            <div className={styles.HelpDescription}>
+                                <img src={TUTORIAL_IMG[selectedModel]} />
+                                <div>
+                                    {TUTORIAL[selectedModel]}
+                                </div>
+                            </div>
+                            <div className={styles.HelpTarget}>
+                                {TUTORIAL_TARGET[selectedModel]}
+                            </div>
+                        </div>
+                    )}
                 </div>
-                {!loading && !result.data && (<Button onClick={generateModel}>Crear modelo</Button>)}
+                {!loading && !result?.data && (<Button onClick={generateModel}>Crear modelo</Button>)}
             </div>
             {loading && (
                 <div className={clsx(commonStyles.loading, commonStyles.withMargin20)}>
@@ -169,32 +197,56 @@ const Models = ({ data, file }) => {
                                 Se han generado y comparado <strong>{Object.keys(result.data.models).length}</strong> modelos de <strong>{selectedModel}</strong> distintos para predecir el valor de
                                 <div className={commonStyles.column}>{selectedColumns}.</div>
                             </div>
-                            <div>El mejor modelo es un <strong>{result.data.best_model.replace('_', ' ')}</strong></div>
+                            <div>El mejor modelo es un <span className={commonStyles.analytics}>{result.data.best_model.replace('_', ' ')}</span></div>
                         </div>
-                        <div className={commonStyles.box}>
-                            <div className={commonStyles.TitleBox}>RMSE</div>
-                            <BarChart
-                                forcedHeight={200}
-                                colorCategories={true}
-                                data={result.data.MSE}
-                                name={""}
-                            />
-                            <div className={styles.metricDescription}>
-                                Proporciona una medida de error en las mismas unidades que la variable objetivo. Un RMSE más pequeño es mejor, indicando que las predicciones del modelo están más cerca de los valores reales.
-                            </div>
-                        </div>
-                        <div className={commonStyles.box}>
-                            <div className={commonStyles.TitleBox}>R2</div>
-                            <BarChart
-                                forcedHeight={200}
-                                colorCategories={true}
-                                data={result.data.R2}
-                                name={""}
-                            />
-                            <div className={styles.metricDescription}>
-                                Un R² más alto generalmente indica un mejor ajuste del modelo a los datos.
-                            </div>
-                        </div>
+                        {selectedModel === 'regresión' && (
+                            <>
+                                <div className={commonStyles.box}>
+                                    <div className={commonStyles.TitleBox}>RMSE</div>
+                                    <BarChart
+                                        forcedHeight={200}
+                                        colorCategories={true}
+                                        data={result.data.MSE}
+                                        name={""}
+                                        selectedCategory={result.data.best_model}
+                                    />
+                                    <div className={styles.metricDescription}>
+                                        Proporciona una medida de error en las mismas unidades que la variable objetivo. Un RMSE más pequeño es mejor, indicando que las predicciones del modelo están más cerca de los valores reales.
+                                    </div>
+                                </div>
+                                <div className={commonStyles.box}>
+                                    <div className={commonStyles.TitleBox}>R2</div>
+                                    <BarChart
+                                        forcedHeight={200}
+                                        colorCategories={true}
+                                        data={result.data.R2}
+                                        name={""}
+                                        selectedCategory={result.data.best_model}
+                                    />
+                                    <div className={styles.metricDescription}>
+                                        Un R² más alto generalmente indica un mejor ajuste del modelo a los datos.
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        {selectedModel === 'clasificación' && (
+                            <>
+                                <div className={commonStyles.box}>
+                                    <div className={commonStyles.TitleBox}>Comparación</div>
+                                    <ClusterBarChart
+                                        forcedHeight={200}
+                                        forcedWidth={420}
+                                        colorCategories={true}
+                                        data={result.data.models}
+                                        name={""}
+                                        selectedCategory={result.data.best_model}
+                                    />
+                                    <div className={styles.metricDescription}>
+                                    Accuracy es la proporción de predicciones correctas entre el total de casos, Recall mide la proporción de positivos reales identificados correctamente, y F1 Score combina precisión y recall en un balance. Cuanto más alto, mejor.
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                     <hr className={commonStyles.divider} />
                     ¿Quieres probar el modelo? Inserta los valores para realizar la predicción:
@@ -206,7 +258,7 @@ const Models = ({ data, file }) => {
                             </div>
                         ))}
                     </div>
-                    <Button onClick={() => {testModel()}}>Generar predicción</Button>
+                    <Button customClassname={commonStyles.AnalyticsButton} onClick={() => {testModel()}}>Generar predicción</Button>
                     {resultTest.testResult && (
                         <div className={styles.modelTestResult}>
                             Predicción:
@@ -218,7 +270,7 @@ const Models = ({ data, file }) => {
                         Puedes descargar el modelo para usarlo posteriormente:
                         <div className={commonStyles.withMargin10}>
                             <a href={`${API_URL}/models/download/${file.name}`} download="best_model" target='_blank'>
-                                <Button onClick={() => {}}>Descargar modelo</Button>
+                                <Button customClassname={commonStyles.AnalyticsButton} onClick={() => {}}>Descargar modelo</Button>
                             </a>
                         </div>
                     </div>
