@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.24b715dc.css",
-    "main.js": "./static/js/main.2a304a1a.js",
+    "main.css": "./static/css/main.a72a82fb.css",
+    "main.js": "./static/js/main.c84c91fb.js",
     "static/media/logo.png": "./static/media/logo.8dbafc65844c7da14512.png",
     "static/media/NeueHaasDisplay-Mediu.ttf": "./static/media/NeueHaasDisplay-Mediu.32921edb532f55cbfdc6.ttf",
     "static/media/NeueHaasDisplay-Light.ttf": "./static/media/NeueHaasDisplay-Light.46f0c2f76453ff7dcfba.ttf",
@@ -20,11 +20,11 @@
     "static/media/NeueHaasDisplay-Thin.woff2": "./static/media/NeueHaasDisplay-Thin.7f5601f26d0da21ce8b5.woff2",
     "static/media/NeueHaasDisplay-Roman.woff2": "./static/media/NeueHaasDisplay-Roman.8b33ba08d72df4c22618.woff2",
     "index.html": "./index.html",
-    "main.24b715dc.css.map": "./static/css/main.24b715dc.css.map",
-    "main.2a304a1a.js.map": "./static/js/main.2a304a1a.js.map"
+    "main.a72a82fb.css.map": "./static/css/main.a72a82fb.css.map",
+    "main.c84c91fb.js.map": "./static/js/main.c84c91fb.js.map"
   },
   "entrypoints": [
-    "static/css/main.24b715dc.css",
-    "static/js/main.2a304a1a.js"
+    "static/css/main.a72a82fb.css",
+    "static/js/main.c84c91fb.js"
   ]
 }
