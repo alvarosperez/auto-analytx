@@ -3,21 +3,21 @@ import React, { useEffect, useState, useRef } from 'react';
 // import clsx from 'clsx';
 import { select } from 'd3-selection';
 import { scaleBand, scaleLinear } from 'd3-scale';
-import { axisBottom } from 'd3-axis';
+import { axisBottom, axisRight } from 'd3-axis';
 import { min, max, bin } from 'd3-array';
 
 import styles from './Histogram.module.scss';
 import { COLORS, GRAPH_HEIGHT, GRAPH_WIDTH } from '../utilities/variables';
 import { formatNumber } from '../utilities/format';
 
-const Correlation = ({ data, name, forcedHeight = false, colorCategories = false, selectedCategory = undefined }) => {
+const Correlation = ({ data, name, forcedHeight = false, forcedWidth = false, colorCategories = false, selectedCategory = undefined }) => {
     const domRef = useRef();
     const [svg, setSvg] = useState(null);
 
     const margin = {
-        top: 20, right: 70, bottom: 70, left: 0,
+        top: 20, right: 100, bottom: 100, left: 20,
     };
-    const fullWidth = GRAPH_WIDTH;
+    const fullWidth = forcedWidth || GRAPH_WIDTH;
     const fullHeight = forcedHeight || GRAPH_HEIGHT;
     const width = fullWidth - margin.left - margin.right;
     const height = fullHeight - margin.top - margin.bottom;
@@ -56,7 +56,19 @@ const Correlation = ({ data, name, forcedHeight = false, colorCategories = false
         x.domain(variables);
         y.domain(variables);
 
-        console.log(value_list);
+        svg.select('.axisBottom').call(
+            axisBottom(x)
+        ).selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)")
+            .style("text-transform", "uppercase")
+
+        svg.select('.axisRight').call(
+            axisRight(y)
+        ).selectAll("text")
+            .style("text-transform", "uppercase")
 
         // append the bar rectangles to the svg element
         const bars = svg.selectAll('rect.histogram').data(value_list);
@@ -66,7 +78,7 @@ const Correlation = ({ data, name, forcedHeight = false, colorCategories = false
             .classed('histogram', true)
             .attr('x', (d) => xR(d[0]))
             .attr('width', x.bandwidth())
-            .attr('y', (d) => y(d[1]) - y.bandwidth() / 2)
+            .attr('y', (d) => y(d[1]))
             .attr('height', y.bandwidth())
             .attr('fill', (d) => color(d[2]))
             ;
@@ -74,51 +86,12 @@ const Correlation = ({ data, name, forcedHeight = false, colorCategories = false
         bars
             .attr('x', (d) => xR(d[0]))
             .attr('width', x.bandwidth())
-            .attr('y', (d) => y(d[1]) - y.bandwidth() / 2)
+            .attr('y', (d) => y(d[1]))
             .attr('height', y.bandwidth())
             .attr('fill', (d) => color(d[2]))
             ;
 
         bars.exit().remove();
-
-        // append the bar rectangles to the svg element
-        const texts = svg.selectAll('text.left').data(variables);
-
-        texts.enter()
-            .append('text')
-            .classed(styles.info, true)
-            .classed('left', true)
-            .attr('x', width)
-            .attr('y', (d) => y(d))
-            .text(d => d);
-
-        texts
-            .attr('x', width + 5)
-            .attr('y', (d) => y(d) + 4)
-            .text(d => d);
-
-        texts.exit().remove();
-
-        // append the bar rectangles to the svg element
-        const vTexts = svg.selectAll('text.bottom').data(variables);
-
-        vTexts.enter()
-            .append('text')
-            .classed(styles.info, true)
-            .classed('bottom', true)
-            .attr('x', -margin.left)
-            .attr('y', (d) => x(d))
-            .text(d => d)
-            .attr('transform', `rotate(+90) translate(${width / 2 + margin.bottom}, ${-(width - margin.top)})`);
-
-        vTexts
-            .attr('x', -margin.left)
-            .attr('y', (d) => x(d))
-            .text(d => d)
-            .attr('transform', `rotate(+90) translate(${width / 2 + margin.bottom / 2 + 20}, ${-(width - margin.top)})`);
-
-        vTexts.exit().remove();
-
     };
 
     useEffect(() => {
@@ -140,6 +113,14 @@ const Correlation = ({ data, name, forcedHeight = false, colorCategories = false
                 <g
                     transform={`translate(${margin.left} , ${margin.top})`}
                 >
+                    <g
+                        className="axisBottom"
+                        transform={`translate(0 , ${height})`}
+                    />
+                    <g
+                        className="axisRight"
+                        transform={`translate(${width} , 0)`}
+                    />
                 </g>
             </svg>
         </div>

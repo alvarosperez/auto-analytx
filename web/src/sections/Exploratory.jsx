@@ -121,13 +121,26 @@ const Exploratory = ({ data, description, fileName }) => {
                                 {data.columns_description[selectedColumn] || 'No hay descripción para esta variable'}
                             </div>
                         </div>
-                        <div className={clsx(styles.histograma, commonStyles.withMargin10)}>
-                            <div className={styles.Title2}>Relación entre variables numéricas</div>
-                            <Correlation
-                                data={data.correlation_matrix}
-                            />
-                            <div className={styles.description}>
-                                Este gráfico muestra la relación entre las variables numéricas del fichero. Las variables en rojo tienen una correlación positiva, que significa que cuando una aumenta, la otra también. Las azules tienen una correlación negativa: cuando una aumenta, la otra disminuye. Las variables en blanco no tienen correlación.
+                    </div>
+                </div>
+                <div className={clsx(commonStyles.box, commonStyles.withMargin10, styles.correlation)}>
+                    <div className={commonStyles.TitleBox}>Relación entre variables numéricas</div>
+                    <div className={styles.correlationContainer}>
+                        <Correlation
+                            forcedWidth={500}
+                            forcedHeight={500}
+                            data={data.correlation_matrix}
+                        />
+                        <div className={styles.description}>
+                            Este gráfico muestra la relación entre las variables numéricas del fichero.
+                            <div className={commonStyles.withMargin10}>
+                                Las variables en rojo tienen una correlación positiva, que significa que cuando una aumenta, la otra también.<br />
+                            </div>
+                            <div className={commonStyles.withMargin10}>
+                                Las azules tienen una correlación negativa: cuando una aumenta, la otra disminuye.<br />
+                            </div>
+                            <div className={commonStyles.withMargin10}>
+                                Las variables en blanco no tienen correlación.
                             </div>
                         </div>
                     </div>
