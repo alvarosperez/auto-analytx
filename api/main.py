@@ -99,6 +99,8 @@ async def create_upload_file(file: UploadFile = File(...)):
                 print(col, e)
                 columns_info[col]["categories"] = {}
 
+    df_numeric = df_nonan.select_dtypes(include=[np.number])
+    correlation_matrix = df_numeric.corr()
 
     return {
         "filename": file.filename,
@@ -112,12 +114,14 @@ async def create_upload_file(file: UploadFile = File(...)):
         "models": {
             "options": {}, # get_possible_analysis(simple_column_info),
         },
+        "correlation_matrix": correlation_matrix.to_dict(),
     }
 
 class AIModel(BaseModel):
     fileName: str
     model: str = None
     columns: str = None
+    groups: int = 0
     data: dict = None
 
 @app.post("/models/train/")
@@ -125,12 +129,17 @@ async def analyse_file(trainModel: AIModel):
     separator = detect_separator(f"./{trainModel.fileName}")
     df = pd.read_csv(f"./{trainModel.fileName}", sep=separator)
 
-    return get_model(trainModel.fileName, trainModel.model, trainModel.columns.split(','), df)
+    return get_model(trainModel.fileName, trainModel.model, trainModel.columns.split(','), df, trainModel.groups)
 
 # endpoint to download a file with the model trained. URL parameter: filename
 @app.get("/models/download/{filename}")
 async def download_file(filename):
     return FileResponse(f"./{filename}_best_model.pickle", media_type="application/octet-stream", filename=f"{filename}_best_model.pickle")
+
+# endpoint to download a file with the model trained. URL parameter: filename
+@app.get("/models/download_processed/{filename}")
+async def download_file(filename):
+    return FileResponse(f"./{filename}_clustered.csv", media_type="application/octet-stream", filename=f"{filename}_clustered.csv")
 
 # endpoint to test a model
 @app.post("/models/test/")

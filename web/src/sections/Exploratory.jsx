@@ -7,6 +7,7 @@ import { COLUMN_TYPES, MIN_MAX_MEAN } from '../utilities/variables';
 import { formatNumber } from '../utilities/format';
 import Histogram from '../components/Histogram';
 import BarChart from '../components/BarChart';
+import Correlation from '../components/Correlation';
 
 
 const Exploratory = ({ data, description, fileName }) => {
@@ -100,23 +101,34 @@ const Exploratory = ({ data, description, fileName }) => {
                             );
                         })}
                     </div>
-                    <div className={styles.histograma}>
-                        <div className={styles.Title2}>{selectedColumn}</div>
-                        {data.columns_info[selectedColumn].type === 'number' && Object.keys(data.columns_info[selectedColumn].bins).length > 0 && (
-                            <Histogram
-                                data={data.columns_info[selectedColumn].bins}
-                                min_max_mean={data.columns_info[selectedColumn].min_max_mean}
-                                name={selectedColumn}
+                    <div>
+                        <div className={styles.histograma}>
+                            <div className={styles.Title2}>{selectedColumn}</div>
+                            {data.columns_info[selectedColumn].type === 'number' && Object.keys(data.columns_info[selectedColumn].bins).length > 0 && (
+                                <Histogram
+                                    data={data.columns_info[selectedColumn].bins}
+                                    min_max_mean={data.columns_info[selectedColumn].min_max_mean}
+                                    name={selectedColumn}
+                                />
+                            )}
+                            {data.columns_info[selectedColumn].type === 'text' && Object.keys(data.columns_info[selectedColumn].categories).length > 0 && (
+                                <BarChart
+                                    data={data.columns_info[selectedColumn].categories}
+                                    name={selectedColumn}
+                                />
+                            )}
+                            <div className={styles.description}>
+                                {data.columns_description[selectedColumn] || 'No hay descripción para esta variable'}
+                            </div>
+                        </div>
+                        <div className={clsx(styles.histograma, commonStyles.withMargin10)}>
+                            <div className={styles.Title2}>Relación entre variables numéricas</div>
+                            <Correlation
+                                data={data.correlation_matrix}
                             />
-                        )}
-                        {data.columns_info[selectedColumn].type === 'text' && Object.keys(data.columns_info[selectedColumn].categories).length > 0 && (
-                            <BarChart
-                                data={data.columns_info[selectedColumn].categories}
-                                name={selectedColumn}
-                            />
-                        )}
-                        <div className={styles.description}>
-                            {data.columns_description[selectedColumn] || 'No hay descripción para esta variable'}
+                            <div className={styles.description}>
+                                Este gráfico muestra la relación entre las variables numéricas del fichero. Las variables en rojo tienen una correlación positiva, que significa que cuando una aumenta, la otra también. Las azules tienen una correlación negativa: cuando una aumenta, la otra disminuye. Las variables en blanco no tienen correlación.
+                            </div>
                         </div>
                     </div>
                 </div>

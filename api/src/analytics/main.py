@@ -1,8 +1,10 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.decomposition import PCA
 from .regression import build_regression_models
 from .classification import build_classification_models
+from .clustering import build_clustering_model
 from src.aux import detect_separator
 import numpy as np
 import pickle
@@ -17,7 +19,7 @@ def get_one_hot_encoder(df_text):
     encoder.fit(df_text)
     return encoder
 
-def get_model(file_name, analysis, targets, df):
+def get_model(file_name, analysis, targets, df, cluster_no=0):
     # Eliminar las instancias con valores faltantes
     df = df.dropna()
 
@@ -55,6 +57,23 @@ def get_model(file_name, analysis, targets, df):
 
         X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=12)
         results = build_classification_models(file_name, X_train, y_train, X_test, y_test, list(set(list(df_text.columns) + list(df_num.columns))))
+        return results
+
+    elif analysis == 'clustering':
+        df_num = df[targets]
+
+        scaler = StandardScaler()
+        scaled_data = scaler.fit_transform(df_num)
+
+        if len(targets) > 2:
+            pca = PCA(n_components=2)
+            pca_data = pca.fit_transform(scaled_data)
+            df_pca = pd.DataFrame(data=pca_data, columns=['PCA1', 'PCA2'])
+
+        else:
+            df_pca = df_num
+
+        results = build_clustering_model(file_name, df, df_pca, cluster_no)
         return results
 
 def test_model(file_name, analysis, data):

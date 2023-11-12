@@ -34,13 +34,6 @@ export const MIN_MAX_MEAN = [
 export const GRAPH_WIDTH = 370;
 export const GRAPH_HEIGHT = 300;
 
-// AWS
-// export const API_URL = 'http://ec2-13-39-155-245.eu-west-3.compute.amazonaws.com:20900'
-// Docker
-// export const API_URL = 'http://localhost:8088';
-// local
-export const API_URL = 'http://localhost:8000';
-
 export const TUTORIAL = {
     "regresión": <>
         <div>La regresión sirve para entender y predecir relaciones entre variables.</div>
@@ -71,3 +64,10 @@ export const TUTORIAL_TARGET = {
     "clasificación": "Elige la variable que contiene la categoría que querrás predecir.",
     "clustering": "Elige las variables numéricas que quieres que se tengan en cuenta y, opcionalmente, el número de grupos que quieres que se formen. Si no, se elegirá automáticamente.",
 }
+
+// AWS
+// export const API_URL = 'http://ec2-13-39-155-245.eu-west-3.compute.amazonaws.com:20900'
+// Docker
+// export const API_URL = 'http://localhost:8088';
+// local
+export const API_URL = 'http://localhost:8000';

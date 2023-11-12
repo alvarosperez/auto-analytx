@@ -12,11 +12,15 @@ import ClusterBarChart from '../components/ClusterBarChart';
 import Input from '../components/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftLong, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import ScatterPlot from '../components/ScatterPlot';
+import LineChart from '../components/LineChart';
 
 const Models = ({ data, file }) => {
     const columnsSelectorRef = React.createRef();
+    const clusteringSelectorRef = React.createRef();
     const [selectedModel, setSelectedModel] = useState(undefined);
     const [selectedColumns, setSelectedColumns] = useState([]);
+    const [selectedClusterNo, setSelectedClusterNo] = useState(0);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState({});
     const [loadingTest, setLoadingTest] = useState(false);
@@ -62,6 +66,7 @@ const Models = ({ data, file }) => {
                 fileName: file.name,
                 model: selectedModel,
                 columns: selectedColumns.join(','),
+                groups: selectedClusterNo,
             }),
         })
             .then((response) => response.json())
@@ -155,6 +160,20 @@ const Models = ({ data, file }) => {
                                 placeholder="Selecciona la(s) columna(s)"
                             />
                         </div>
+                        {selectedModel === 'clustering' && (
+                            <div className={clsx(styles.columnSelector, (loading || result?.data) && styles.locked)}>
+                                <Select
+                                    ref={clusteringSelectorRef}
+                                    options={[[0, 'Grupos automáticos'], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7,], [8, 8]].map((column) => ({ value: column[0], label: column[1] }))}
+                                    onChange={(e) => {
+                                        if (!e) return setSelectedClusterNo(0);
+                                        setSelectedClusterNo(e.value);
+                                    }}
+                                    placeholder="Grupos automáticos"
+                                />
+                            </div>
+
+                        )}
                     </div>
                     {(!selectedModel) && (
                         <div className={clsx(commonStyles.Tutorial, styles.tutorial)}>
@@ -193,11 +212,22 @@ const Models = ({ data, file }) => {
                     <hr className={commonStyles.divider} />
                     <div className={styles.evaluation}>
                         <div className={styles.evaluationDescription}>
-                            <div>
-                                Se han generado y comparado <strong>{Object.keys(result.data.models).length}</strong> modelos de <strong>{selectedModel}</strong> distintos para predecir el valor de
-                                <div className={commonStyles.column}>{selectedColumns}.</div>
-                            </div>
-                            <div>El mejor modelo es un <span className={commonStyles.analytics}>{result.data.best_model.replace('_', ' ')}</span></div>
+                            {selectedModel === 'clustering' ? (
+                                <>
+                                    <div>
+                                        Se ha generado un modelo de <strong>{selectedModel}</strong> con <strong>{result.data.silhouette.cluster_no}</strong> grupos.
+                                    </div>
+                                    {selectedClusterNo === 0 && <div>Se probaron varios números de grupos distintos para detectar el mejor.</div>}
+                                </>
+                            ) : (
+                                <>
+                                    <div>
+                                        Se han generado y comparado <strong>{Object.keys(result.data.models).length}</strong> modelos de <strong>{selectedModel}</strong> distintos para predecir el valor de
+                                        <div className={commonStyles.column}>{selectedColumns}.</div>
+                                    </div>
+                                    <div>El mejor modelo es un <span className={commonStyles.analytics}>{result.data.best_model.replace('_', ' ')}</span></div>
+                                </>
+                            )}
                         </div>
                         {selectedModel === 'regresión' && (
                             <>
@@ -247,23 +277,67 @@ const Models = ({ data, file }) => {
                                 </div>
                             </>
                         )}
+                        {selectedModel === 'clustering' && (
+                            <>
+                                <div className={commonStyles.box}>
+                                    <div className={commonStyles.TitleBox}>Clusters</div>
+                                    <ScatterPlot
+                                        forcedHeight={250}
+                                        forcedWidth={350}
+                                        data={result.data.clustered}
+                                        xAxis={selectedColumns.length <= 2 ? Object.keys(result.data.clustered[0]).filter((key) => key !== 'Cluster')[0] : ""}
+                                        yAxis={selectedColumns.length === 2 ? Object.keys(result.data.clustered[0]).filter((key) => key !== 'Cluster')[1] : ""}
+                                    />
+                                    <div className={styles.metricDescription}>
+                                        Este gráfico muestra la distribución de los datos respecto a las variables seleccionadas, coloreados según el grupo al que pertenecen.
+                                        {selectedColumns > 2 && (<div>Como seleccionaste más de dos columnas, se han agrupado para poder visualizarlas en 2 dimensiones.</div>)}
+                                    </div>
+                                </div>
+                                {selectedClusterNo === 0 && (
+                                    <div className={commonStyles.box}>
+                                        <div className={commonStyles.TitleBox}>Número de clusters</div>
+                                        <LineChart
+                                            forcedHeight={250}
+                                            forcedWidth={350}
+                                            data={result.data.silhouette}
+                                        />
+                                        <div className={styles.metricDescription}>
+                                            Mediante un proceso llamado "método de la silueta", se prueba el modelo con distintos números de clusters para encontrar el que mejor se ajusta a los datos.
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
                     </div>
                     <hr className={commonStyles.divider} />
-                    ¿Quieres probar el modelo? Inserta los valores para realizar la predicción:
-                    <div className={clsx(styles.modelTestInputs, commonStyles.withMargin20)}>
-                        {result.data.test_columns.map((column) => (
-                            <div key={column} className={styles.columnInput}>
-                                <div className={styles.columnInputTitle}>{column}</div>
-                                <Input onChange={(event) => { inputTestData(column, event) }} />
+                    {selectedModel === 'clustering' ? (
+                        <>
+                            Descarga los datos procesados, con una columna nueva que indica el grupo al que pertenece cada fila:
+                            <div className={commonStyles.withMargin10}>
+                                <a href={`${API_URL}/models/download_processed/${file.name}`} download="best_model" target='_blank'>
+                                    <Button customClassname={commonStyles.AnalyticsButton} onClick={() => {}}>Descargar datos procesados</Button>
+                                </a>
                             </div>
-                        ))}
-                    </div>
-                    <Button customClassname={commonStyles.AnalyticsButton} onClick={() => {testModel()}}>Generar predicción</Button>
-                    {resultTest.testResult && (
-                        <div className={styles.modelTestResult}>
-                            Predicción:
-                            <span>{formatNumber(resultTest.testResult.value)}</span>
-                        </div>
+                        </>
+                    ) : (
+                        <>
+                            ¿Quieres probar el modelo? Inserta los valores para realizar la predicción:
+                            <div className={clsx(styles.modelTestInputs, commonStyles.withMargin20)}>
+                                {result.data.test_columns.map((column) => (
+                                    <div key={column} className={styles.columnInput}>
+                                        <div className={styles.columnInputTitle}>{column}</div>
+                                        <Input onChange={(event) => { inputTestData(column, event) }} />
+                                    </div>
+                                ))}
+                            </div>
+                            <Button customClassname={commonStyles.AnalyticsButton} onClick={() => {testModel()}}>Generar predicción</Button>
+                            {resultTest.testResult && (
+                                <div className={styles.modelTestResult}>
+                                    Predicción:
+                                    <span>{formatNumber(resultTest.testResult.value)}</span>
+                                </div>
+                            )}
+                        </>
                     )}
                     <hr className={commonStyles.divider} />
                     <div>
@@ -274,15 +348,6 @@ const Models = ({ data, file }) => {
                             </a>
                         </div>
                     </div>
-                    {/*
-                    <hr className={commonStyles.divider} />
-                    <div>
-                        Descarga los datos procesados con los grupos que ha generado el modelo:
-                        <div className={commonStyles.withMargin10}>
-                            <Button onClick={() => {}}>Descargar dataset procesado</Button>
-                        </div>
-                    </div>
-                    */}
                 </div>
             )}
         </div>
