@@ -66,8 +66,8 @@ export const TUTORIAL_TARGET = {
 }
 
 // AWS
-// export const API_URL = 'http://ec2-13-39-155-245.eu-west-3.compute.amazonaws.com:20900'
+export const API_URL = 'http://ec2-13-39-155-245.eu-west-3.compute.amazonaws.com:20900'
 // Docker
 // export const API_URL = 'http://localhost:8088';
 // local
-export const API_URL = 'http://localhost:8000';
+// export const API_URL = 'http://localhost:8000';

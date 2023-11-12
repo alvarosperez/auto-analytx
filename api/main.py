@@ -109,10 +109,10 @@ async def create_upload_file(file: UploadFile = File(...)):
         "rows": df.shape[0],
         "columns": df.shape[1],
         "columns_info": columns_info,
-        "description" : "...", # summarize_headers(df.columns.tolist()),
-        "columns_description": {}, # get_columns_info(columns_info),
+        "description" : summarize_headers(df.columns.tolist()),
+        "columns_description": get_columns_info(columns_info),
         "models": {
-            "options": {}, # get_possible_analysis(simple_column_info),
+            "options": get_possible_analysis(simple_column_info),
         },
         "correlation_matrix": correlation_matrix.to_dict(),
     }
