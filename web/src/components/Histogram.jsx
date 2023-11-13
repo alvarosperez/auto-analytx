@@ -47,7 +47,7 @@ const Histogram = ({ data, min_max_mean, name }) => {
         x.domain([min_max_mean[0] - binSize, min_max_mean[1] + binSize]);
 
         svg.select('.axisBottom').call(
-            axisBottom(x).ticks(5)//.tickFormat((d) => `${Math.floor(d / 1000)}k`),
+            axisBottom(x).ticks(8)//.tickFormat((d) => `${Math.floor(d / 1000)}k`),
         );
 
         y.domain([0, max(bins, (d) => d.length) * 1.05]);

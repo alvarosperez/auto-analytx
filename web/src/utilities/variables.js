@@ -6,7 +6,7 @@ import clusteringImg from '../assets/img/clustering.png';
 import regImg from '../assets/img/reg.png';
 
 export const PROJECT_NAME = 'Auto Analytx';
-export const PROJECT_PATH = '/auto-analytx';
+export const PROJECT_PATH = '';
 
 export const MODELS = ["clasificación", "clustering", "regresión", "predicción temporal"];
 

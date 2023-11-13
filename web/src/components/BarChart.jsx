@@ -32,7 +32,7 @@ const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, s
         const svgElem = select(domRef.current).select('svg > g');
         svgElem.select('g.axisBottom')
             .call(
-                axisBottom(x).ticks(5).tickFormat((d) => `${Math.floor(d / 1000)}k`),
+                axisBottom(x).ticks(5),
             );
 
         setSvg(svgElem);
@@ -43,7 +43,7 @@ const BarChart = ({ data, name, forcedHeight = false, colorCategories = false, s
 
         x.domain(categories);
         svg.select('.axisBottom').call(
-            axisBottom(x)
+            axisBottom(x).ticks(min([categories.length, 15]))
         );
         y.domain([0, max(Object.values(info)) * 1.05]);
 

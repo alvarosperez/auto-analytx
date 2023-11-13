@@ -42,6 +42,7 @@ const Models = ({ data, file }) => {
         // 'predicción temporal': ,
         clustering: numericColumns,
     };
+    const chatGPTTargets = Object.keys(data.models.options).filter((option) => option !== 'predicción temporal' && data.models.options[option].length >= 1);
 
     console.log(dateColumns, numericColumns, categoricalColumns);
     console.log(resultTest);
@@ -119,7 +120,7 @@ const Models = ({ data, file }) => {
             <div className={commonStyles.Title2}>Analítica Avanzada</div>
             <div>Quieres realizar algún tipo de modelo? Para tus datos, estas son las opciones que podrían tener sentido:</div>
             <ul>
-                {Object.keys(data.models.options).map((option) => (
+                {chatGPTTargets.map((option) => (
                     <li key={option} className={styles.option}>
                         <span className={commonStyles.analytics}>{option}</span>
                         , con las columnas:&nbsp;

@@ -28,11 +28,35 @@ def summarize_headers(headers):
         print(e)
         return "..."
 
-def get_columns_info(columns_info):
+def get_columns_info(columns_info, rows):
+
+    new_dict = {}
+
+    for key, value in columns_info.items():
+        new_dict[key] = {
+            "name": value['name'],
+            "type": value['type'],
+            "missing": value['missing'],
+            "unique": value['unique'],
+            # "bins": value['bins'],
+            # "categories": value['categories'],
+        }
+        if value['type'] == "number":
+            new_dict[key]["min_max_mean"] = value['min_max_mean']
+            new_dict[key]["bins"] = value['bins']
+        if value['type'] == "text":
+            if value['unique'] >= 100:
+                if value['unique'] == rows:
+                    new_dict[key]["categories"] = "Todas los valores son únicos"
+                else:
+                    new_dict[key]["categories"] = f"Hay {value['unique']} valores únicos"
+            else:
+                new_dict[key]["categories"] = value['categories']
+
     messages = []
     messages.append({
         "role": "user",
-        "content": f'Para cada una de las variables, y con los datos que te doy, dime alguna cosa interesante. Ve al grano, sin hacer introducción de cada una, pero la estructura del texto puede ser distinta para cada variable. Devuelveme un json con un único párrafo en castellano de menos de 60 palabras por cada variable.\n\n{columns_info}'
+        "content": f'Para cada una de las variables, y con los datos que te doy, dime alguna cosa interesante. Ve al grano, sin hacer introducción de cada una, pero la estructura del texto puede ser distinta para cada variable. Devuelveme un json con un único párrafo en castellano de menos de 60 palabras por cada variable.\n\n{new_dict}'
     })
 
     try:

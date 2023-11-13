@@ -113,7 +113,7 @@ async def create_upload_file(file: UploadFile = File(...)):
         "columns": df.shape[1],
         "columns_info": columns_info,
         "description" : summarize_headers(df.columns.tolist()),
-        "columns_description": get_columns_info(columns_info),
+        "columns_description": get_columns_info(columns_info, df.shape[0]),
         "models": {
             "options": get_possible_analysis(simple_column_info),
         },

@@ -43,9 +43,7 @@ class Login extends React.Component {
                 className={clsx(styles.Container, customClassname)}
             >
                 <div className={styles.LogoContainer}>
-                    <object className={styles.Logo} data="https://alvarosperez.github.io/auto-analytx/static/media/logo.png" type="image/png">
-                        <img className={styles.Logo} src={logo} alt="logo" />
-                    </object>
+                    <img className={styles.Logo} src={logo} alt="logo" />
                     <div className={styles.WelcomeText}>{ welcomeText }</div>
                 </div>
 
